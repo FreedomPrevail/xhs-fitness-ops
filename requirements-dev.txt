@@ -1,5 +1,5 @@
 -r requirements.txt
 
 # Optional local development checks.
-ruff>=0.8
+ruff>=0.16.4
 
