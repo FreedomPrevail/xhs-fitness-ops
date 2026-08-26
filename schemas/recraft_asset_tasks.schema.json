@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "recraft_asset_tasks.schema.json",
+  "title": "Recraft Asset Task Plan",
+  "description": "V1 only plans Recraft assets. It does not require image generation.",
+  "type": "object",
+  "required": ["post_id", "style_lock", "asset_tasks"],
+  "properties": {
+    "post_id": {"type": "string"},
+    "style_lock": {
+      "type": "object",
+      "required": ["visual_mode", "character_consistency", "text_policy"],
+      "properties": {
+        "visual_mode": {"type": "string", "enum": ["light_realistic", "editorial_photo", "soft_illustration", "diagrammatic"]},
+        "character_consistency": {"type": "string"},
+        "palette_hint": {"type": "string"},
+        "text_policy": {"type": "string", "const": "no_text_in_generated_asset"}
+      }
+    },
+    "asset_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["asset_id", "page_no", "slot_id", "type", "prompt", "status", "output_path"],
+        "properties": {
+          "asset_id": {"type": "string"},
+          "page_no": {"type": "integer", "minimum": 1, "maximum": 7},
+          "slot_id": {"type": "string"},
+          "type": {"type": "string", "enum": ["cover_variant", "main_visual", "supporting_visual", "illustration_strip", "diagram", "comparison", "icon_set", "background"]},
+          "prompt": {"type": "string", "minLength": 1, "maxLength": 2400},
+          "negative_prompt": {"type": "string", "maxLength": 700},
+          "module_types": {"type": "array", "items": {"type": "string"}},
+          "composition": {"type": "string"},
+          "aspect_ratio": {"type": "string", "enum": ["3:4", "1:1", "4:3", "16:9", "9:16"]},
+          "status": {"type": "string", "enum": ["planned", "generated", "failed", "skipped", "deferred"], "default": "planned"},
+          "output_path": {"type": "string"},
+          "generation_metadata": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

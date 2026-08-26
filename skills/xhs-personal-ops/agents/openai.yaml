@@ -1,0 +1,6 @@
+interface:
+  display_name: "健身账号个人风格运营"
+  short_description: "用本人语气生成可编辑的健身图文与封面"
+  default_prompt: "Use $xhs-personal-ops to apply my personal voice memory, use $imagegen for no-text visuals when needed, and create today's review-ready JPG previews plus an editable Canva PPTX carousel."
+policy:
+  allow_implicit_invocation: true

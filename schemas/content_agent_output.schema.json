@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["title", "body", "topics", "cover_text", "knowledge_units", "evidence"],
+  "properties": {
+    "title": {"type": "string"},
+    "body": {"type": "string"},
+    "topics": {"type": "array", "items": {"type": "string"}},
+    "cover_text": {"type": "string"},
+    "knowledge_units": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 36,
+      "items": {
+        "type": "object",
+        "required": ["unit_id", "kind", "label", "detail", "basis"],
+        "properties": {
+          "unit_id": {"type": "string", "minLength": 1, "maxLength": 16},
+          "kind": {"type": "string", "enum": ["principle", "step", "parameter", "comparison", "mistake", "safety", "check", "example", "summary"]},
+          "label": {"type": "string", "minLength": 1, "maxLength": 18},
+          "detail": {"type": "string", "minLength": 1, "maxLength": 52},
+          "condition": {"type": "string", "maxLength": 42},
+          "action": {"type": "string", "maxLength": 42},
+          "safety_note": {"type": "string", "maxLength": 52},
+          "icon_hint": {"type": "string", "maxLength": 30},
+          "basis": {"type": "string", "enum": ["general_knowledge", "provided_source", "operator_confirmed", "unknown"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["pattern_ids", "golden_ids"],
+      "properties": {
+        "pattern_ids": {"type": "array", "items": {"type": "string"}},
+        "golden_ids": {"type": "array", "items": {"type": "string"}},
+        "used_moves": {"type": "array", "items": {"type": "string"}},
+        "used_features": {
+          "type": "object",
+          "properties": {
+            "topic_features": {"type": "array", "items": {"$ref": "#/$defs/feature_ref"}},
+            "audience_features": {"type": "array", "items": {"$ref": "#/$defs/feature_ref"}},
+            "content_features": {"type": "array", "items": {"$ref": "#/$defs/feature_ref"}},
+            "copy_features": {"type": "array", "items": {"$ref": "#/$defs/feature_ref"}},
+            "cover_features": {"type": "array", "items": {"$ref": "#/$defs/feature_ref"}}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "feature_ref": {
+      "type": "object",
+      "required": ["golden_id", "feature"],
+      "properties": {
+        "golden_id": {"type": "string"},
+        "feature": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

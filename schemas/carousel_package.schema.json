@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "carousel_package.schema.json",
+  "title": "XHS Carousel Package",
+  "type": "object",
+  "required": ["post_id", "topic_id", "title", "page_count", "pages", "review", "evidence"],
+  "properties": {
+    "post_id": {"type": "string", "minLength": 1},
+    "topic_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "page_count": {"type": "integer", "minimum": 5, "maximum": 7},
+    "pages": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["page_no", "type", "template_type", "title", "bullets", "asset_refs", "rendered_path"],
+        "properties": {
+          "page_no": {"type": "integer", "minimum": 1, "maximum": 7},
+          "type": {"type": "string"},
+          "template_type": {"type": "string"},
+          "title": {"type": "string"},
+          "subtitle": {"type": "string"},
+          "badge": {"type": "string"},
+          "bullets": {"type": "array", "items": {"type": "string"}},
+          "density": {"type": "string"},
+          "info_unit_count": {"type": "integer"},
+          "modules": {"type": "array", "items": {"type": "object"}},
+          "key_takeaway": {"type": "string"},
+          "asset_refs": {"type": "array", "items": {"type": "string"}},
+          "rendered_path": {"type": "string"},
+          "canva_notes": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["status", "checks"],
+      "properties": {
+        "status": {"type": "string", "enum": ["pending", "pass", "needs_edit", "blocked"]},
+        "checks": {
+          "type": "object",
+          "properties": {
+            "text_overflow": {"type": "boolean"},
+            "mobile_readability": {"type": "boolean"},
+            "visual_content_match": {"type": "boolean"},
+            "style_consistency": {"type": "boolean"},
+            "compliance_ok": {"type": "boolean"}
+          }
+        },
+        "issues": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "pattern_ids": {"type": "array", "items": {"type": "string"}},
+        "golden_ids": {"type": "array", "items": {"type": "string"}},
+        "account_signals": {"type": "array", "items": {"type": "string"}},
+        "used_moves": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  },
+  "additionalProperties": false
+}

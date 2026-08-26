@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["directions"],
+  "properties": {
+    "directions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "reason", "visual_mode", "palette", "composition", "text_zone", "prompt"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "reason": {"type": "string"},
+          "visual_mode": {"type": "string"},
+          "palette": {"type": "string"},
+          "composition": {"type": "string"},
+          "text_zone": {"enum": ["bottom_copy", "top_copy", "left_copy"]},
+          "prompt": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

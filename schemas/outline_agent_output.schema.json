@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "outline_agent_output.schema.json",
+  "title": "XHS Carousel Outline Agent Output",
+  "type": "object",
+  "required": ["topic_id", "title", "page_count", "pages", "evidence"],
+  "properties": {
+    "topic_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1, "maxLength": 40},
+    "content_goal": {"type": "string"},
+    "target_audience": {"type": "string"},
+    "page_count": {"type": "integer", "minimum": 5, "maximum": 7},
+    "pages": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["page_no", "type", "title", "bullets", "modules", "scene", "purpose"],
+        "properties": {
+          "page_no": {"type": "integer", "minimum": 1, "maximum": 7},
+          "type": {
+            "type": "string",
+            "enum": ["cover", "resonance", "step", "explain", "comparison", "warning", "checklist", "faq", "summary", "cta"]
+          },
+          "purpose": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1, "maxLength": 32},
+          "subtitle": {"type": "string", "maxLength": 50},
+          "badge": {"type": "string", "maxLength": 12},
+          "bullets": {
+            "type": "array",
+            "maxItems": 6,
+            "items": {"type": "string", "maxLength": 36}
+          },
+          "density": {"type": "string", "enum": ["light", "medium", "high"]},
+          "info_unit_count": {"type": "integer", "minimum": 0, "maximum": 14},
+          "modules": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "required": ["module_id", "type", "title", "items"],
+              "properties": {
+                "module_id": {"type": "string", "minLength": 1, "maxLength": 20},
+                "type": {"type": "string", "enum": ["step_flow", "comparison", "action_cards", "checklist", "fact_grid", "mistake_fix", "timeline", "formula", "faq", "summary"]},
+                "title": {"type": "string", "maxLength": 18},
+                "note": {"type": "string", "maxLength": 48},
+                "items": {
+                  "type": "array",
+                  "maxItems": 6,
+                  "items": {
+                    "type": "object",
+                    "required": ["label"],
+                    "properties": {
+                      "label": {"type": "string", "minLength": 1, "maxLength": 18},
+                      "value": {"type": "string", "maxLength": 24},
+                      "detail": {"type": "string", "maxLength": 46},
+                      "cue": {"type": "string", "maxLength": 38},
+                      "tag": {"type": "string", "maxLength": 12},
+                      "icon_hint": {"type": "string", "maxLength": 30},
+                      "source_unit_ids": {"type": "array", "maxItems": 4, "items": {"type": "string"}}
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "columns": {
+                  "type": "array",
+                  "maxItems": 2,
+                  "items": {
+                    "type": "object",
+                    "required": ["title", "items"],
+                    "properties": {
+                      "title": {"type": "string", "maxLength": 16},
+                      "items": {"type": "array", "maxItems": 5, "items": {"type": "string", "maxLength": 34}}
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "key_takeaway": {"type": "string", "maxLength": 60},
+          "scene": {"type": "string", "minLength": 1, "maxLength": 220},
+          "needs_visual": {"type": "boolean", "default": true},
+          "visual_role": {
+            "type": "string",
+            "enum": ["hero", "supporting", "diagram", "comparison", "icon_only", "background", "none"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["pattern_ids", "golden_ids"],
+      "properties": {
+        "pattern_ids": {"type": "array", "items": {"type": "string"}},
+        "golden_ids": {"type": "array", "items": {"type": "string"}},
+        "account_signals": {"type": "array", "items": {"type": "string"}},
+        "transfer_dimensions": {
+          "type": "object",
+          "properties": {
+            "topic": {"type": "number"},
+            "audience": {"type": "number"},
+            "content": {"type": "number"},
+            "copy": {"type": "number"},
+            "cover": {"type": "number"}
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

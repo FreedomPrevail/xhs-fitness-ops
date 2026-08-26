@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "visual_director_output.schema.json",
+  "title": "XHS Visual Director Output",
+  "type": "object",
+  "required": ["design_system", "pages"],
+  "properties": {
+    "design_system": {
+      "type": "object",
+      "required": ["style_name", "tone", "palette", "typography_density"],
+      "properties": {
+        "style_name": {"type": "string"},
+        "tone": {"type": "string"},
+        "palette": {
+          "type": "object",
+          "properties": {
+            "background": {"type": "string"},
+            "primary": {"type": "string"},
+            "accent": {"type": "string"},
+            "text": {"type": "string"}
+          }
+        },
+        "typography_density": {"type": "string", "enum": ["light", "medium", "dense"]},
+        "consistency_rules": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["page_no", "template_type", "layout", "text_emphasis", "asset_slots"],
+        "properties": {
+          "page_no": {"type": "integer", "minimum": 1, "maximum": 7},
+          "template_type": {
+            "type": "string",
+            "enum": ["cover_scene", "infographic_flow", "infographic_compare", "infographic_actions", "infographic_grid", "infographic_checklist", "infographic_mistakes", "infographic_timeline", "infographic_formula", "infographic_faq", "infographic_summary"]
+          },
+          "layout": {
+            "type": "string",
+            "enum": ["top_title_bottom_visual", "stacked_modules", "split_compare", "three_card_grid", "two_by_two_grid", "vertical_timeline", "centered_checklist", "editorial_freeform"]
+          },
+          "text_emphasis": {"type": "array", "items": {"type": "string", "maxLength": 18}},
+          "text_density": {"type": "string", "enum": ["light", "medium", "dense"]},
+          "module_types": {"type": "array", "items": {"type": "string"}},
+          "asset_slots": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": ["slot_id", "role", "required"],
+              "properties": {
+                "slot_id": {"type": "string"},
+                "role": {"type": "string", "enum": ["hero", "supporting", "diagram", "illustration_strip", "comparison_left", "comparison_right", "icon", "background"]},
+                "required": {"type": "boolean"},
+                "placement": {"type": "string"},
+                "safe_text_area": {"type": "string"}
+              }
+            }
+          },
+          "scene_prompt": {"type": "string", "maxLength": 400},
+          "render_notes": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
