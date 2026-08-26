@@ -1,0 +1,69 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*tokens*.json
+*cookies*.json
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.pid
+*.zip
+
+# Runtime account and Golden data
+data/*
+!data/README.md
+!data/raw/
+!data/raw/.gitkeep
+!data/personal_knowledge/
+!data/personal_knowledge/.gitkeep
+!data/personal_knowledge/documents/
+!data/personal_knowledge/documents/.gitkeep
+!data/daily_runs/
+!data/daily_runs/.gitkeep
+
+# Generated drafts, covers and Canva packages
+content/drafts/*
+!content/drafts/.gitkeep
+content/covers/*
+!content/covers/.gitkeep
+content/post_pages/*
+!content/post_pages/.gitkeep
+content/canva_packages/*
+!content/canva_packages/.gitkeep
+content/asset_tasks/*
+!content/asset_tasks/.gitkeep
+content/storyboards/*
+!content/storyboards/.gitkeep
+content/visual_specs/*
+!content/visual_specs/.gitkeep
+
+# Local browser and agent state must never enter this repository
+.opencli/
+browser-profile/
+playwright-report/
+test-results/
+
