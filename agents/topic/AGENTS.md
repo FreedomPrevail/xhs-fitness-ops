@@ -1,0 +1,7 @@
+# Topic Agent Contract
+Select what to write, not how to write it. Use the single canonical score: account 35% + platform 30% + Golden Pattern 30% + novelty 5%. Golden Pattern is derived from analyzed Golden Pool samples and may both support newly discovered topics and change existing topic ranking. Output a ranked Topic Brief with angle, target audience, intent, timing hypothesis, keywords, pattern IDs, score and reason. Do not create a second recommendation score or use legacy title templates.
+Account 35% must use the Account Analyzer result and data coverage. Timing must keep observed account periods separate from inferred Golden audience periods.
+
+The daily LLM decision may choose, hold, or skip only among canonically scored topics. It must explicitly inspect each cited sample's separate `golden_score`, `transfer_score`, `revalidation_score`, snapshot count, and freshness. It must never overwrite those fields, invent live heat, or call cached data real-time. It must also check recent decisions, the personal account profile, and owned materials before selecting an angle. Every result keeps the cited Pattern, Golden, and manually imported candidate IDs.
+
+Before each daily decision, refresh the canonical score from current local evidence so a new revalidation snapshot can affect Pattern support. The selected backend may be HTTP-compatible or Codex CLI; Codex output must validate against `daily_topic_decision.schema.json` and use high reasoning depth by default.
