@@ -1,0 +1,13 @@
+# 本地内容生产计划。小红书浏览、互动和发布必须人工完成。
+publish:
+  platform_automation: false
+  manual_publish_required: true
+  max_local_packages_per_day: 1
+
+# 仅作为运营者主动运行时的个人时间偏好，不创建 cron 或后台任务。
+operator_suggested_hour: 6
+
+topics_hashtags:               # 话题标签池(publish --topics 用,不含#)
+  fitness: ["健身", "减脂", "居家健身", "健身打卡", "健康生活"]
+  health_risk: ["健康科普", "运动损伤", "医疗知识"]
+  insurance: ["健康保障", "保险知识"]

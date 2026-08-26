@@ -1,0 +1,136 @@
+{
+  "_comment": "Public seed configuration. Runtime evidence and committed scores are local data and must not be committed.",
+  "version": 1,
+  "updated_at": null,
+  "epsilon": 0.2,
+  "scoring_formula": {
+    "account": 0.35,
+    "platform": 0.3,
+    "golden": 0.3,
+    "novelty": 0.05
+  },
+  "score_commit": {
+    "status": "uncommitted"
+  },
+  "topics": [
+    {
+      "id": "fat_loss_diet",
+      "category": "fitness_value",
+      "label": "理性减脂饮食",
+      "weight": 1.2,
+      "base_weight": 1.2,
+      "title_patterns": [
+        "减脂饮食先做好这{N}件事",
+        "忙碌上班族的低门槛饮食清单",
+        "同样一餐，怎样搭配更有饱腹感"
+      ],
+      "heat_keyword": "减脂饮食",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "home_workout",
+      "category": "fitness_value",
+      "label": "居家基础训练",
+      "weight": 1.2,
+      "base_weight": 1.2,
+      "title_patterns": [
+        "在家练{部位}的{N}个基础动作",
+        "没有器械也能完成的训练顺序",
+        "空间不大时怎么安排一次训练"
+      ],
+      "heat_keyword": "居家健身",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "follow_along_burn",
+      "category": "fitness_value",
+      "label": "低门槛跟练",
+      "weight": 1.2,
+      "base_weight": 1.2,
+      "title_patterns": [
+        "新手也能完成的{X}分钟跟练",
+        "第一次跟练先控制这{N}个变量",
+        "忙碌日也能完成的短时训练"
+      ],
+      "heat_keyword": "新手跟练",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "stretch_mobility",
+      "category": "fitness_value",
+      "label": "拉伸与活动度",
+      "weight": 1.2,
+      "base_weight": 1.2,
+      "title_patterns": [
+        "久坐后可以做的{N}个舒缓动作",
+        "拉伸前先分清放松和疼痛",
+        "训练后怎样安排简单整理活动"
+      ],
+      "heat_keyword": "拉伸放松",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "beginner_guide",
+      "category": "fitness_value",
+      "label": "新手入门与避坑",
+      "weight": 1.2,
+      "base_weight": 1.2,
+      "title_patterns": [
+        "第一次去健身房先做这{N}步",
+        "健身新手容易忽略的准备清单",
+        "不会调器械时怎么安全开始"
+      ],
+      "heat_keyword": "新手健身",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "sports_injury",
+      "category": "health_risk",
+      "label": "运动安全与不适识别",
+      "weight": 1.0,
+      "base_weight": 1.0,
+      "title_patterns": [
+        "训练中出现这些信号先停下来",
+        "普通酸胀和异常疼痛怎么区分",
+        "新动作开始前的安全检查"
+      ],
+      "heat_keyword": "运动安全",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "recovery_habits",
+      "category": "health_risk",
+      "label": "恢复与生活习惯",
+      "weight": 1.0,
+      "base_weight": 1.0,
+      "title_patterns": [
+        "训练后恢复先看这{N}件事",
+        "睡眠不足时怎样调整训练",
+        "新手训练频率如何循序增加"
+      ],
+      "heat_keyword": "运动恢复",
+      "stats": {},
+      "source": "curated"
+    },
+    {
+      "id": "health_insurance_guide",
+      "category": "insurance_soft",
+      "label": "健康保障基础知识",
+      "weight": 0.2,
+      "base_weight": 0.2,
+      "title_patterns": [
+        "理解健康保障前先看这{N}项信息",
+        "普通人阅读保障条款的基础顺序"
+      ],
+      "heat_keyword": "",
+      "stats": {},
+      "source": "disabled_by_default"
+    }
+  ]
+}

@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小红书健身号 · 运营看板</title>
+<style>
+  :root{
+    --bg:#0f1117; --card:#1a1d27; --line:#2a2e3c; --fg:#e8eaf0; --mut:#9aa0b4;
+    --accent:#ff5e78; --ok:#26a69a; --warn:#f5a623; --bar:#3a60a0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei",-apple-system,sans-serif;background:var(--bg);color:var(--fg);font-size:14px;line-height:1.6}
+  header{position:sticky;top:0;z-index:10;background:#12141c;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  header h1{font-size:16px;margin:0;color:var(--accent)}
+  nav a{color:var(--mut);text-decoration:none;margin-right:14px;font-size:13px}
+  nav a:hover{color:var(--fg)}
+  main{max-width:1100px;margin:0 auto;padding:20px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:20px}
+  section h2{font-size:15px;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+  .badge{font-size:11px;color:var(--mut);font-weight:normal}
+  button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px}
+  button:hover{opacity:.9} button:disabled{opacity:.4;cursor:not-allowed}
+  button.ghost{background:#2a2e3c;color:var(--fg)}
+  input,textarea,select{background:#0f1117;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit}
+  textarea{width:100%;min-height:180px;resize:vertical}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-weight:normal}
+  .row{display:flex;gap:16px;flex-wrap:wrap}
+  .col{flex:1;min-width:280px}
+  .wbar{height:16px;background:var(--bar);border-radius:4px;display:inline-block;vertical-align:middle}
+  .card2{background:#12141c;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+  .cat-fitness_value{border-left:3px solid var(--ok)}
+  .cat-health_risk{border-left:3px solid var(--bar)}
+  .cat-insurance_soft{border-left:3px solid var(--accent)}
+  .hot{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+  .hot .likes{color:var(--warn);font-size:12px;white-space:nowrap}
+  .status{font-size:12px;color:var(--mut);margin-left:8px}
+  .err{color:var(--accent)} .good{color:var(--ok)}
+  label{display:block;color:var(--mut);font-size:12px;margin:8px 0 4px}
+  .pill{display:inline-block;background:#2a2e3c;border-radius:12px;padding:2px 10px;font-size:12px;margin:2px 4px 2px 0}
+  .version{display:inline-block;background:#ff5e78;color:white;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+  .golden-stats{display:grid;grid-template-columns:repeat(6,minmax(105px,1fr));gap:10px;margin:14px 0}
+  .golden-stat{background:#12141c;border:1px solid var(--line);border-radius:10px;padding:11px}
+  .golden-stat b{display:block;font-size:21px;color:var(--fg)}
+  .golden-stat span{font-size:11px;color:var(--mut)}
+  .human-btn{background:#ff5e78!important;color:white!important;font-weight:700;white-space:nowrap}
+  .human-btn.selected{background:#234b46!important;color:#78e2d3!important}
+  .candidate-card{border-left:3px solid var(--warn)}
+  .hydrate-errors{display:none;background:#24161b;border:1px solid #713244;border-radius:10px;padding:10px 12px;margin-top:10px}
+  .hydrate-errors.show{display:block}
+  @media(max-width:900px){.golden-stats{grid-template-columns:repeat(3,1fr)}}
+  img.cover{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+  .cover-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px;max-width:820px}
+  .cover-choice{border:2px solid var(--line);border-radius:14px;padding:8px;background:white;cursor:pointer;transition:.15s}
+  .cover-choice:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.08)}
+  .cover-choice.selected{border-color:#111;box-shadow:0 0 0 2px #111 inset}
+  .cover-choice .cap{font-size:12px;font-weight:700;margin:7px 3px 2px;color:#555}
+  @media(max-width:760px){.cover-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏋️ 运营看板</h1><span class="version">V4.2 · A1/A2 + Codex 图文</span>
+  <nav>
+    <a href="#s-data">① 数据面板</a>
+    <a href="#s-sample">🔥 样本库</a>
+    <a href="#s-golden">⭐ Golden</a>
+    <a href="#s-topic">② 今日选题</a>
+    <a href="#s-hot">③ 热门搜索</a>
+    <a href="#s-write">④ AI写稿</a>
+    <a href="#s-cover">⑤ 封面</a>
+    <a href="#s-pub">⑥ 审查发布</a>
+  </nav>
+  <span id="gstatus" class="status"></span>
+  <button class="ghost" onclick="restartServer()" style="font-size:11px;padding:4px 10px" title="修改后端代码后点此重启">🔁 重启</button>
+</header>
+
+<main>
+  <!-- ① 数据面板 -->
+  <section id="s-data">
+    <h2>① 数据面板 <span class="badge">账号表现 + 各选题权重(数据驱动的核心)</span></h2>
+    <div class="row">
+      <div class="col">
+        <div class="card2">
+          <b>内部证据路线（自己的账号）</b>
+          <div class="status">账号概览＋全部自帖＋真实粉丝画像 → Account Opportunity＋每个选题的AccountScore</div>
+          <button class="ghost" onclick="doDataCenterCollect()" title="仅在你主动点击时读取自己的创作者数据中心">A1 只读整个数据中心</button>
+          <button class="ghost" onclick="doCollect()" title="仅在你主动点击时整理自己的账号和逐篇笔记数据">A2 采集并整理我的账号数据</button>
+          <div class="status" style="margin-top:8px">A1/A2 仅在你点击时运行，不会后台定时。</div>
+        </div>
+        <div class="card2">
+          <b>每日内容生成</b>
+          <div class="status">直接读取最新 A1/A2、Golden Pattern、个人记忆和历史数据。</div>
+          <button class="ghost" onclick="runDailyDecision()">LLM 判断今日选题</button>
+          <button onclick="runFullDaily()">生成今日完整内容包</button>
+          <span id="dailyRunStatus" class="status"></span>
+          <div id="dailyDecision" class="status" style="margin-top:10px"></div>
+        </div>
+        <div class="card2">
+          <b>外部证据路线（平台帖子）</b>
+          <div class="status">热门Feed＋关键词搜索 → 健身热帖样本库 → 你人工确认Golden＋Agent补充 → PlatformHeat＋GoldenEvidence</div>
+          <button onclick="collectExternalStage()" title="由你主动触发；遇到登录、验证或限流立即暂停">B1 采集外部热帖并暂停</button>
+          <div class="status">B2：采集完成后，到下方样本库至少点1篇“⭐设为人工Golden”。</div>
+        </div>
+        <div class="card2">
+          <b>两路融合（最后执行）</b>
+          <div class="status">内部机会＋外部机会共同生成具体选题；随后融合Account 35%＋Platform 30%＋Golden 30%＋Exploration 5%，得到Topic Score和权重排名。</div>
+          <button class="ghost" onclick="continueTopicPipeline()">C 融合两路并计算 Topic Score</button>
+        </div>
+        <button id="xhsVerifyBtn" class="ghost" onclick="checkXhsVerification()" style="display:none">✅ 已扫码，检查认证</button>
+        <span id="dataStatus" class="status"></span>
+        <div class="status" style="margin-top:4px">内部和外部是两条独立采集路线；只有点击C时才合在一起生成选题、计算权重并更新正式柱状图。中途失败保持上一版不变。</div>
+        <h3 style="font-size:13px;color:var(--mut);margin:14px 0 6px">账号总览</h3>
+        <table id="acctTable"><tbody></tbody></table>
+        <div id="accountIntel" class="card2" style="margin-top:10px"></div>
+        <details style="margin-top:8px"><summary class="status">导入创作者后台真实受众/活跃时段（可选JSON兜底）</summary>
+          <textarea id="audienceJson" style="min-height:90px" placeholder='{"observed":{"gender":"女70%","age":"25-34"},"active_periods":[{"window":"19:00-22:00"}],"confidence":1,"basis":"创作者后台"}'></textarea>
+          <button class="ghost" onclick="saveAudience()">保存真实受众快照</button><span id="audienceStatus" class="status"></span>
+        </details>
+      </div>
+      <div class="col">
+        <h3 style="font-size:13px;color:var(--mut);margin:0 0 6px">各选题 Topic Score（固定35%+30%+30%+5%）</h3>
+        <div id="weightBars"></div>
+      </div>
+    </div>
+    <h3 style="font-size:13px;color:var(--mut);margin:14px 0 6px">笔记表现(近期)</h3>
+    <table id="notesTable"><thead><tr><th>标题</th><th>浏览</th><th>赞</th><th>藏</th><th>评</th><th>分享</th><th>涨粉</th><th>消费深度</th><th>CTR</th><th>来源</th><th>选题</th></tr></thead><tbody></tbody></table>
+  </section>
+
+  <!-- 健身样本库 + 爆火因子 -->
+  <section id="s-sample">
+    <h2>🔥 健身热帖样本库 <span class="badge">观察平台上什么内容火,爆火因子分析</span></h2>
+    <button class="ghost" onclick="loadSamples()">重新读取样本库</button>
+    <span id="sampleStatus" class="status"></span>
+    <div id="factors" class="card2" style="margin-top:10px"></div>
+    <div class="status" style="margin:8px 0">这里只更新平台样本证据，不会单独改变 Topic Score。在每篇热帖最右侧点 <b>⭐ 设为人工 Golden</b> 后进入 Candidate。</div>
+    <table id="sampleTable"><thead><tr><th>点赞</th><th>收藏</th><th>评论</th><th>标题</th><th>关键词</th><th>发布</th><th>Golden 操作</th></tr></thead><tbody></tbody></table>
+  </section>
+
+
+  <!-- Golden Sample / Pattern -->
+  <section id="s-golden">
+    <h2>⭐ Golden 样本中心 <span class="version">多维证据 V3</span> <span class="badge">内容＋受众推断＋文案＋真实封面视觉＋平台表现＋分维度Transfer</span></h2>
+    <button class="ghost" onclick="doGoldenDiscover()">B2（可选）Agent补充10篇Candidate</button>
+    <button id="goldenAnalyzeBtn" onclick="doGoldenAnalyze()">B3 确认本轮选择 → Feature＋Golden Sample＋Pattern</button>
+    <button onclick="continueTopicPipeline()">C 融合内外两路并计算Topic Score</button>
+    <button class="ghost" onclick="doGoldenRebuild()">维护：单独重建 Pattern</button>
+    <button class="ghost" onclick="doGoldenRevalidate()">复查 Golden 实时热度</button>
+    <button class="ghost" onclick="loadGolden()">刷新</button>
+    <span id="goldenStatus" class="status">B3只完成外部Golden证据；点击C后才与内部账号证据融合并提交Topic Score</span>
+    <div id="goldenStats" class="golden-stats"></div>
+    <div id="hydrateErrors" class="hydrate-errors"></div>
+    <div class="row" style="margin-top:12px">
+      <div class="col"><h3 style="font-size:13px;color:var(--mut)">Candidate 候选池（你本轮人工选择的帖子会显示在这里）</h3><div id="goldenCandidates"></div></div>
+      <div class="col"><h3 style="font-size:13px;color:var(--mut)">Golden Pool（已入库 Golden Samples）</h3><div id="goldenPool"></div></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="col"><h3 style="font-size:13px;color:var(--mut)">Golden Patterns（由 Pool 的 Feature 聚合）</h3><div id="goldenPatterns"></div></div>
+    </div>
+  </section>
+
+  <!-- ② 今日选题 -->
+  <section id="s-topic">
+    <h2>② 今日推荐选题 <span class="badge">唯一权重：账号35%＋平台30%＋Golden Pattern 30%＋热点新颖度5%</span></h2>
+    <button class="ghost" onclick="refreshRecommend()">读取已生效推荐</button>
+    <span id="recoStatus" class="status">只读取最近一次完整流程提交的正式 Topic Score</span>
+    <div id="recoList"></div>
+  </section>
+
+  <!-- ③ 热门搜索 -->
+  <section id="s-hot">
+    <h2>③ 选题文案搜索 <span class="badge">实时平台文案＋相关Golden Sample，勾选作为写稿证据</span></h2>
+    <input id="kw" placeholder="搜索关键词" style="width:200px">
+    <input id="kwlimit" type="number" value="10" style="width:60px" title="数量">
+    <button onclick="doSearch()">🔍 搜索</button>
+    <span id="hotStatus" class="status"></span>
+    <div id="hotList" style="margin-top:10px"></div>
+  </section>
+
+  <!-- ④ AI写稿 -->
+  <section id="s-write">
+    <h2>④ AI 写稿 <span class="badge">用选题 + 勾选的参考,LLM 写原创稿</span></h2>
+    <div class="card2" style="margin-bottom:12px">
+      <b style="font-size:13px">⚙️ 模型配置</b> <span id="modelStatus" class="status"></span>
+      <div class="row" style="margin-top:6px">
+        <div><label>文本后端</label><select id="mProvider" onchange="autoSaveModelCfg()"><option value="http">Base URL / API</option><option value="codex_cli">本机 Codex CLI</option></select></div>
+        <div><label>Base URL</label><input id="mBaseUrl" placeholder="https://api.deepseek.com/v1" style="width:260px" onchange="autoSaveModelCfg()"></div>
+        <div><label>API Key</label><input id="mApiKey" type="password" placeholder="sk-..." style="width:200px" onchange="autoSaveModelCfg()"></div>
+        <div><label>模型名（Codex可空）</label><input id="mModelName" placeholder="deepseek-chat" style="width:160px" onchange="autoSaveModelCfg()"></div>
+        <div><label>分析深度</label><select id="mReasoning" onchange="autoSaveModelCfg()"><option value="auto">按Agent：Topic/Content高，Cover中</option><option value="low">全部低</option><option value="medium">全部中</option><option value="high">全部高</option><option value="xhigh">全部超高</option></select></div>
+      </div>
+    </div>
+    <div id="writeCtx" class="status">请先在②选一个选题</div>
+    <button id="genBtn" onclick="doGenerate()" disabled>✍️ 生成文案</button>
+    <span id="writeStatus" class="status"></span>
+    <label>标题</label><input id="dTitle" style="width:100%">
+    <label>正文</label><textarea id="dBody"></textarea>
+    <label>话题标签(逗号分隔)</label><input id="dTopics" style="width:100%">
+    <label>封面文字</label><input id="dCover" style="width:100%">
+  </section>
+
+  <!-- ⑤ 封面 -->
+  <section id="s-cover">
+    <h2>⑤ 封面 <span class="badge">3个设计候选 · 点击选择</span></h2>
+    <button class="ghost" onclick="doCover()">⚡ 快速旧模板封面（可选）</button>
+    <button onclick="doCarousel()">✨ 生成图文包 + 3套动态封面（推荐）</button>
+    <span id="coverStatus" class="status"></span>
+    <div class="card2" style="margin-top:12px">
+      <b>Canva Connect</b>
+      <span class="status">首次配置凭证后授权一次；每套图文仍由你点击后才上传。</span>
+      <button class="ghost" onclick="connectCanva()">连接 Canva</button>
+      <span id="canvaStatus" class="status">正在检查连接…</span>
+      <div class="status" style="margin-top:6px">凭证只保存在系统安全凭证库，不写入项目、浏览器或 ZIP。</div>
+    </div>
+    <div id="coverGrid" class="cover-grid"></div>
+    <div id="coverCritic" class="status" style="margin-top:8px"></div>
+    <div id="carouselResult" class="card2" style="margin-top:10px"></div>
+  </section>
+
+  <!-- ⑥ 审查发布 -->
+  <section id="s-pub">
+    <h2>⑥ 审查 & 发布 <span class="badge">合规校验通过后才能发;默认存草稿</span></h2>
+    <button class="ghost" onclick="doCompliance()">✅ 合规校验</button>
+    <button class="ghost" onclick="doReviewer()">🧪 Reviewer</button>
+    <span id="compStatus" class="status"></span>
+    <span id="reviewStatus" class="status"></span>
+    <div style="margin-top:10px">
+      <span style="color:#888;font-size:13px">先到⑤生成封面，再推送到小红书创作者平台草稿箱</span>
+    </div>
+    <button id="pubBtn" disabled style="margin-top:8px" title="V4 仅人工通过官方客户端发布">请在官方客户端人工发布</button>
+    <span id="pubStatus" class="status"></span>
+  </section>
+</main>
+
+<script>
+// ---------- 全局状态 ----------
+const state = { topic:null, refs:[], coverImage:"", goldenUsageId:"", contentEvidence:{}, goldenRefs:new Set() };
+const $ = id => document.getElementById(id);
+const gstatus = m => $("gstatus").textContent = m;
+const esc = value => String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const mediaLabel = value => value==="image_text"?"🖼️ 图文":value==="video"?"🎬 视频":"❔ 未识别";
+window._compOk = false;
+window._reviewOk = false;
+
+function invalidateReleaseChecks(){
+  window._compOk=false; window._reviewOk=false;
+  $("compStatus").textContent="内容已变化，请重新校验";
+  $("reviewStatus").textContent="内容已变化，请重新 Reviewer";
+}
+
+// ---------- 模型配置 ----------
+const MCFG_KEY = "xhs_model_config";
+const MKEY_SESSION = "xhs_model_api_key";
+function modelReady(c){ return (c.provider||"http")==="codex_cli" || Boolean(c.base_url&&c.api_key&&c.model); }
+function updateModelFields(){
+  const codex=$("mProvider").value==="codex_cli";
+  $("mBaseUrl").disabled=codex; $("mApiKey").disabled=codex;
+  $("mModelName").placeholder=codex?"留空使用 Codex 默认模型":"deepseek-chat";
+}
+function getModelCfg(){
+  try{
+    const c=JSON.parse(localStorage.getItem(MCFG_KEY)) || {};
+    c.api_key=sessionStorage.getItem(MKEY_SESSION)||"";
+    return c;
+  }
+  catch(e){ return {}; }
+}
+function loadModels(){
+  const c = getModelCfg();
+  $("mProvider").value = c.provider||"http";
+  if(c.base_url) $("mBaseUrl").value = c.base_url;
+  if(c.api_key) $("mApiKey").value = c.api_key;
+  if(c.model) $("mModelName").value = c.model;
+  $("mReasoning").value = c.reasoning_effort||"auto";
+  updateModelFields();
+  if(modelReady(c)) $("modelStatus").innerHTML = `<span class='good'>✓ ${(c.provider||"http")==="codex_cli"?"Codex CLI":"Base URL"} 已配置</span>`;
+}
+function autoSaveModelCfg(){
+  const depth=$("mReasoning").value;
+  const apiKey=$("mApiKey").value.trim();
+  const c = {provider:$("mProvider").value,base_url: $("mBaseUrl").value.trim(), model: $("mModelName").value.trim()};
+  if(depth==="auto") c.agent_reasoning={topic:"high",golden:"high",content:"high",outline:"medium",cover:"medium",golden_cover:"medium",image:"low"};
+  else c.reasoning_effort=depth;
+  sessionStorage.setItem(MKEY_SESSION,apiKey);
+  localStorage.setItem(MCFG_KEY, JSON.stringify(c));
+  c.api_key=apiKey;
+  updateModelFields();
+  $("modelStatus").innerHTML = modelReady(c)?"<span class='good'>✓ 已保存</span>":"<span class='err'>HTTP 后端还缺少配置</span>";
+}
+
+async function jpost(path, body){
+  const r = await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+  return r.json();
+}
+async function jget(path){ return (await fetch(path,{cache:"no-store"})).json(); }
+
+// 慢任务:提交→轮询→回调
+async function postTask(path, body, statusEl, onDone){
+  statusEl.textContent = "⏳ 处理中…"; statusEl.className="status";
+  const {task_id} = await jpost(path, body);
+  if(!task_id){ statusEl.textContent="✗ 提交失败"; return; }
+  const timer = setInterval(async ()=>{
+    const t = await jget("/api/task/"+task_id);
+    if(t.status==="running"){ statusEl.textContent="⏳ 运行中…"; }
+    else if(t.status==="done"){ clearInterval(timer); statusEl.textContent="✓ 完成"; statusEl.className="status good"; onDone(t.result); }
+    else if(t.status==="error"){ clearInterval(timer); statusEl.textContent="✗ "+(t.error||"出错"); statusEl.className="status err"; }
+  }, 3000);
+}
+
+function showDailyDecision(r){
+  const d=r||{};
+  $("dailyDecision").innerHTML=d.ok?`<b>今日决策：${esc(d.decision||"—")} · ${esc(d.topic?.label||d.selected_topic_id||"")}</b><div class="status">角度：${esc(d.angle||"—")}</div><div class="status">理由：${esc(d.reason||"—")}</div><div class="status">数据新鲜度：${esc(d.data_freshness||"unknown")} · LLM ${d.llm_used?"已参与":"降级规则"} · 风险：${esc((d.risks||[]).join("；")||"无")}</div>`:`<span class="err">${esc(d.error||"决策失败")}</span>`;
+  if(d.ok && d.topic) useTopic(d.topic);
+}
+
+function dailyStatus(){ return $("dailyRunStatus"); }
+
+function runDailyDecision(){
+  const cfg=getModelCfg();
+  const status=dailyStatus();
+  if(!modelReady(cfg)){ status.textContent="✗ 请选择 Codex CLI，或补全 Base URL / API Key / 模型"; return; }
+  postTask("/api/topic/daily-decision",{model_config:cfg},status,showDailyDecision);
+}
+
+function runFullDaily(){
+  const status=dailyStatus();
+  const cfg=getModelCfg();
+  if(!modelReady(cfg)){ status.textContent="✗ 请选择 Codex CLI，或补全 Base URL / API Key / 模型"; return; }
+  postTask("/api/daily/run",{model_config:cfg,generate_images:true},status,r=>{
+    showDailyDecision(r.decision||r);
+    if(!r.ok){ status.textContent="✗ "+(r.error||r.decision?.error||"每日流程失败"); return; }
+    if(r.content){
+      $("dTitle").value=r.content.title||""; $("dBody").value=r.content.body||"";
+      $("dTopics").value=(r.content.topics||[]).join(","); $("dCover").value=r.content.cover_text||"";
+      state.goldenUsageId=r.content.golden_usage_id||""; state.contentEvidence=r.content.evidence||{};
+    }
+    if(r.carousel) showCarousel(r.carousel);
+    status.textContent=r.stage==="package_ready"?"✓ 今日文案、图文页和3套封面已生成；请人工审核并在官方客户端发布":"✓ 今日决策已完成";
+  });
+}
+
+// ---------- ① 数据面板 ----------
+async function loadDashboard(){
+  const d = await jget("/api/dashboard");
+  // 账号总览
+  $("acctTable").querySelector("tbody").innerHTML =
+    d.account.map(a=>`<tr><td>${a.metric}</td><td>${a.total}</td></tr>`).join("") || "<tr><td class='status'>暂无数据,点采集</td></tr>";
+  // 权重条
+  const formula=d.scoring_formula||{};
+  const formulaOk=Number(formula.account)===0.35&&Number(formula.platform)===0.30&&Number(formula.golden)===0.30&&Number(formula.novelty)===0.05;
+  if(!formulaOk) throw new Error("后端Topic Score公式不是35/30/30/5，已拒绝渲染旧权重");
+  const finalOf=t=>Number(t.final_score);
+  const maxw = Math.max(1, ...d.topics.map(finalOf));
+  const sorted = [...d.topics].sort((a,b)=>finalOf(b)-finalOf(a));
+  $("weightBars").innerHTML = d.score_committed&&sorted.length ? sorted.map(t=>{
+    const heat = t.platform_heat==null ? "—" : t.platform_heat;
+    const tag = t.source==="discovered" ? " <span class='pill' style='background:var(--ok)'>新发现</span>" : "";
+    const ad=t.account_dimensions||{}, pd=t.platform_dimensions||{};
+    return `<div style="margin:5px 0">
+      <span style="display:inline-block;width:110px">${t.label}${tag}</span>
+      <span class="wbar" style="width:${finalOf(t)/maxw*150}px"></span> Topic Score ${finalOf(t).toFixed(3)}
+      <span class="status">账号 ${t.account_score ?? "—"}×35% · 平台 ${t.platform_score ?? "—"}×30% · Golden ${t.golden_score ?? "—"}×30% · 新颖度 ${t.novelty_score ?? "—"}×5% · 热度 ${heat}</span>
+      <div class="status">证据类型 ${t.recommendation_status==="formal_cross"?"内外交叉":t.recommendation_status==="formal_internal_exploration"?"内部探索":t.recommendation_status==="formal_external_exploration"?"外部趋势探索":"证据不足"} · 证据置信度 ${Math.round((t.evidence_confidence||0)*100)}% · 账号七维覆盖 ${Math.round((t.account_data_coverage||0)*100)}% / 账号置信度 ${Math.round((t.account_confidence||0)*100)}% · 平台四维覆盖 ${Math.round((t.platform_data_coverage||0)*100)}%</div>
+      <details><summary class="status">查看细分公式证据</summary><div class="status">账号：历史${ad.historical_performance??"缺失"} · 互动${ad.interaction_structure??"缺失"} · 消费${ad.consumption_depth??"缺失"} · 涨粉${ad.follower_conversion??"缺失"} · 来源${ad.traffic_source??"缺失"} · 受众${ad.audience_fit??"缺失"} · 缺口${ad.content_gap??"缺失"}</div><div class="status">平台：互动${pd.engagement_quality??"缺失"} · 动量${pd.trend_momentum??"缺失"} · 高热率${pd.high_heat_sample_rate??"缺失"} · 样本覆盖${pd.sample_coverage??"缺失"}</div></details></div>`;
+  }).join("") : "<div class='card2 err'>尚无新版完整流程提交的正式 Topic Score。请先完成①外部采集、②人工Golden确认，再点击③继续分析与评分。</div>";
+  if((d.candidate_topics||[]).length){
+    $("weightBars").innerHTML+=`<details style="margin-top:10px"><summary class="status">无真实证据候选 ${(d.candidate_topics||[]).length} 个（不进入柱状图）</summary>${d.candidate_topics.map(x=>`<div class="status">${esc(x.label||x.id)} · 内部${x.internal?"✓":"缺失"} · 外部${x.external?"✓":"缺失"}</div>`).join("")}</details>`;
+  }
+  const ai=d.account_intelligence||{}, timing=ai.timing||{}, audience=ai.audience||{}, ops=ai.operations||{}, dc=ai.data_center||{};
+  const periods=(timing.periods||[]).map(x=>typeof x==="string"?x:(x.window||x.label||JSON.stringify(x))).join(" / ")||"数据不足";
+  const opportunities=(ai.opportunities||[]).slice(0,3).map(x=>`${x.label}(${x.reason})`).join(" / ")||"暂无账号型机会";
+  const dcMetrics=Object.keys(dc.account_metrics||{});
+  const foundSections=(dc.found_sections||[]).join(" / ")||"尚未读取", missingSections=(dc.missing_sections||[]).join(" / ");
+  $("accountIntel").innerHTML=`<b>账号运营分析</b><div class="status">官方数据中心：${esc(dc.source||"missing")} · 已读栏目 ${esc(foundSections)}${missingSections?" · 缺少 "+esc(missingSections):" · 三栏目完整"} · 逐篇表格${dc.note_count||0}篇</div><div class="status">可用字段：${dcMetrics.length?esc(dcMetrics.join(" / ")):"尚未读取"}</div><div class="status">真实受众来源：${esc(audience.source||"missing")} · 活跃/建议时段：${esc(periods)} · 置信度 ${Number(timing.confidence||0).toFixed(2)}</div><div class="status">账号新选题机会：${esc(opportunities)}</div><div class="status">运营：已归因${ops.posts||0}篇 · 选题集中度${Math.round((ops.topic_concentration||0)*100)}% · 平均发布间隔${ops.average_publish_interval_days??"—"}天</div><div class="status">${esc((ops.recommendations||[]).join("；")||timing.basis||"尚无小时级数据；系统不会伪造高峰")}</div>`;
+  // 笔记表
+  $("notesTable").querySelector("tbody").innerHTML =
+    d.notes.map(n=>`<tr><td>${esc(n.title||"(无题)")}</td><td>${n.views}</td><td>${n.likes}</td><td>${n.favorites}</td><td>${n.comments}</td><td>${n.shares??"—"}</td><td>${n.rise_fans??"—"}</td><td>${n.avg_view_time_seconds==null?"—":n.avg_view_time_seconds+"s"}</td><td>${n.ctr==null?"—":Math.round(n.ctr*1000)/10+"%"}</td><td>${esc(n.top_source||"—")}</td><td>${esc(n.topic_id||"")}</td></tr>`).join("")
+    || "<tr><td colspan=11 class='status'>还没有已发布笔记的数据</td></tr>";
+  const commit=d.score_commit||{};
+  gstatus(d.score_committed?`正式Topic Score v${d.weights_version||"?"} · Pipeline ${commit.pipeline_id||"—"}`:"Topic Score 尚未由完整流程提交");
+}
+async function saveAudience(){
+  try{
+    const payload=JSON.parse($("audienceJson").value||"{}");
+    const r=await jpost("/api/account/audience",payload);
+    $("audienceStatus").textContent=r.ok?"✓ 已保存并重算时段":"✗ "+(r.error||"失败");
+    if(r.ok) loadDashboard();
+  }catch(e){ $("audienceStatus").textContent="✗ JSON格式错误: "+e.message; }
+}
+function doCollect(){
+  postTask("/api/collect",{},$("dataStatus"),r=>{
+    if(!r?.ok){ $("dataStatus").textContent="✗ "+(r?.error||"采集失败"); return; }
+    const dc=r.data_center||{};
+    $("dataStatus").textContent=`✓ 采集完成：账号指标${r.metrics||0}项 · 逐篇${r.notes||0}篇 · 已归因${r.mapped_notes||0}篇 · 来源${r.stats_source||"—"} · 数据中心${dc.ok?"已读取":"使用兜底"}${dc.warning?"（"+dc.warning+"）":""}`;
+    loadDashboard();
+  });
+}
+function doDataCenterCollect(){
+  postTask("/api/account/data-center/collect",{},$("dataStatus"),r=>{
+    if(!r?.ok){
+      const e=r?.error||{};
+      $("dataStatus").textContent=(r?.manual_verification_required?"⏸ ":"✗ ")+(e.message||r?.error||"数据中心读取失败");
+      return;
+    }
+    $("dataStatus").textContent=`✓ 整个数据中心已读取${r.page_count||0}个页面/分区 · 账号字段${r.metrics_count||0}项 · 逐篇表格${(r.notes||[]).length}篇 · ${r.raw_path||""}`;
+    loadDashboard();
+  });
+}
+function collectExternalStage(){
+  $("xhsVerifyBtn").style.display="none";
+  $("dataStatus").textContent="⏳ 正在采集外部热帖；完成后会暂停等待你人工选择Golden…";
+  postTask("/api/pipeline",{phase:"collect_external",discover:false},$("dataStatus"),r=>{
+    if(r.ok && r.awaiting_human_golden){
+      Promise.all([loadSamples(),loadGolden()]).then(()=>{
+        $("dataStatus").innerHTML=`<span class='good'>✓ 外部路线：样本 ${r.sample_rows||0} 篇已准备。现在到“健身热帖样本库”至少选择1篇“⭐设为人工Golden”；可再点“Agent选10篇”补充。选完后点击C与内部路线融合。</span>`;
+        location.hash="#s-sample";
+      });
+      return;
+    }
+    const manual=Boolean(r.manual_verification_required)||(r.hard_stop||{}).code==="MANUAL_VERIFICATION_REQUIRED";
+    $("dataStatus").textContent=(manual?"⏸ ":"✗ ")+(r.error||"外部采集失败")+((r.log||[]).length?" · "+r.log.join(" · "):"");
+    $("dataStatus").className="status "+(manual?"":"err");
+    if(manual) $("xhsVerifyBtn").style.display="inline-block";
+  });
+}
+
+function continueTopicPipeline(){
+  $("xhsVerifyBtn").style.display="none";
+  $("dataStatus").textContent="⏳ 正在完成外部Golden证据，并与内部账号证据融合：生成选题、计算35/30/30/5；旧柱状图暂时保留…";
+  postTask("/api/pipeline",{phase:"continue_after_human",discover:true,model_config:getModelCfg()},$("dataStatus"),r=>{
+    if(r.ok && r.score_committed){
+      const d=r.detail||{}, disc=r.discovery||{};
+      const warn=(d.attempted>0&&d.enriched===0)||Boolean(d.hard_stop)||Boolean(disc.error);
+      const f=r.scoring_formula||{};
+      const formulaOk=Number(f.account)===0.35&&Number(f.platform)===0.30&&Number(f.golden)===0.30&&Number(f.novelty)===0.05;
+      if(!formulaOk){ $("dataStatus").textContent="✗ 本次结果不是35/30/30/5，已拒绝刷新柱状图"; $("dataStatus").className="status err"; return; }
+      Promise.all([loadDashboard(),loadSamples(),loadRecommend()]).then(()=>{
+        $("dataStatus").innerHTML=`<span class='${warn?'err':'good'}'>${warn?'⚠':'✓'} Topic Score v${r.weights_version||"?"} 已统一刷新 · ${(r.log||[]).map(esc).join(" · ")}</span>`;
+      });
+    }
+    else {
+      const manual=Boolean(r.manual_verification_required)||(r.hard_stop||{}).code==="MANUAL_VERIFICATION_REQUIRED";
+      $("dataStatus").textContent=(manual?"⏸ ":"✗ ")+(r.error||"失败")+((r.log||[]).length?" · "+r.log.join(" · "):"");
+      $("dataStatus").className="status "+(manual?"":"err");
+      if(manual) $("xhsVerifyBtn").style.display="inline-block";
+    }
+  });
+}
+
+async function checkXhsVerification(){
+  const btn=$("xhsVerifyBtn"), status=$("dataStatus");
+  btn.disabled=true; status.textContent="🔎 正在检查保留的认证窗口…";
+  try{
+    const r=await jget("/api/xhs/verification/status");
+    if(r.verified){
+      status.textContent="✓ "+r.message+"；系统不会自动请求，请重新点击“① 采集外部热帖”";
+      status.className="status good"; btn.style.display="none";
+    }else{
+      status.textContent="⏸ "+(r.message||r.error||"认证尚未完成");
+      status.className="status"; btn.style.display="inline-block";
+    }
+  }catch(e){
+    status.textContent="✗ 检查认证失败: "+e; status.className="status err";
+  }finally{ btn.disabled=false; }
+}
+
+// ---------- 健身样本库 ----------
+async function loadSamples(){
+  $("sampleStatus").textContent="加载中…";
+  const [r,g] = await Promise.all([jget("/api/samples"),jget("/api/golden")]);
+  if(!r.ok){ $("sampleStatus").textContent="✗ "+r.error; return; }
+  state.goldenRefs=new Set((g.candidates||[]).flatMap(x=>[x.url,x.note_id,x.title]).filter(Boolean));
+  const mc=r.media_counts||{};
+  $("sampleStatus").textContent=`✓ 已重新读取 ${r.sample_n||0} 篇 · 数据批次 ${r.data_date||"—"} · 页面读取时间 ${new Date().toLocaleTimeString()} · 图文 ${mc.image_text||0} / 视频 ${mc.video||0} / 未知 ${mc.unknown||0}`;
+  const f = r.factors||{};
+  $("factors").innerHTML = f.ok ? `<b>爆火因子分析</b>(共${f.sample_n}条样本)
+    <div class="status">· 爆款标题平均${f.top_avg_title_len}字 vs 普通${f.rest_avg_title_len}字
+    · 爆款带数字比例${Math.round(f.top_num_ratio*100)}% vs ${Math.round(f.rest_num_ratio*100)}%</div>` : "";
+  $("sampleTable").querySelector("tbody").innerHTML = r.top.map(x=>{
+    const selected=state.goldenRefs.has(x.url)||state.goldenRefs.has(x.note_id)||state.goldenRefs.has(x.title);
+    return `<tr><td class="likes" style="color:var(--warn)">${x.likes_raw||0}</td>
+     <td>${x.detail_fetched ? (x.collects_raw||x.collects_num||0) : "—"}</td>
+     <td>${x.detail_fetched ? (x.comments_raw||x.comments_num||0) : "—"}</td>
+     <td><a href="${esc(x.url)}" target="_blank" style="color:var(--fg);text-decoration:none">${esc(x.title)}</a><br><span class="pill">${mediaLabel(x.content_type)}</span>${x.content_type!=="unknown"?` <span class="status">自动识别</span>`:""}</td>
+     <td class="status">${esc(x.keyword)}</td><td class="status">${esc(x.published_at)}</td>
+     <td><button class="human-btn ${selected?'selected':''}" ${selected?'disabled':''} onclick="humanGolden(decodeURIComponent('${encodeURIComponent(x.url)}'),decodeURIComponent('${encodeURIComponent(x.title)}'),'${x.content_type||"unknown"}')">${selected?'✅ 已选 Candidate':'⭐ 设为人工 Golden'}</button></td></tr>`
+  }).join("");
+}
+
+
+
+// ---------- Golden Engine ----------
+async function humanGolden(noteRef,title,detectedType="unknown"){
+  const reason = prompt("为什么这篇值得进入 Golden？", "文案/结构/受众匹配值得学习");
+  if(reason===null) return;
+  let normalized=detectedType;
+  if(normalized==="unknown"){
+    const media = prompt("平台没有返回媒介类型，请输入“图文”或“视频”", "图文");
+    if(media===null) return;
+    normalized = /视频|video/i.test(media)?"video":/图文|图片|image/i.test(media)?"image_text":"unknown";
+    if(normalized==="unknown" && !confirm("仍未识别，将按“未知媒介”保存，是否继续？")) return;
+  }
+  const r = await jpost("/api/golden/human",{note_ref:noteRef,reason,content_type:normalized});
+  $("goldenStatus").textContent = r.ok ? `✓ 本轮人工Candidate已确认：${title}。可以继续选择，或点击B3正式分析Golden。` : `✗ ${r.error||"失败"}`;
+  if(r.ok){ await loadGolden(); await loadSamples(); location.hash="#s-golden"; }
+}
+function doGoldenDiscover(){
+  $("goldenStatus").textContent="🤖 Discovery Agent 排名中…";
+  jpost("/api/golden/discover",{n:10}).then(r=>{
+    $("goldenStatus").textContent=r.ok?`✓ Agent补充Candidate +${(r.candidates||[]).length}；仍必须保留至少1篇本轮人工确认，再点击B3`:`✗ ${r.error||"失败"}`; loadGolden();
+  });
+}
+async function classifyGoldenMedia(candidateId,contentType){
+  const r=await jpost("/api/golden/media",{candidate_id:candidateId,content_type:contentType});
+  $("goldenStatus").textContent=r.ok?`✓ 已标为${mediaLabel(contentType)}；Golden证据已更新，正式Topic Score未改变`:`✗ ${r.error||"补标失败"}`;
+  if(r.ok){ await loadGolden(); await loadSamples(); }
+}
+function doGoldenAnalyze(){
+  const cfg=getModelCfg();
+  if(!modelReady(cfg)){ $("goldenStatus").textContent="✗ 请选择 Codex CLI，或补全 Base URL / API Key / 模型"; return; }
+  postTask("/api/golden/analyze",{limit:20,model_config:cfg},$("goldenStatus"),r=>{
+    if(!r?.ok){ $("goldenStatus").textContent="✗ "+(r?.error||"失败"); return; }
+    const h=r.hydrate||{}, f=r.feature_analysis||{}, a=r.admission||{};
+    const failed=(h.errors||[]).length;
+    $("goldenStatus").className=failed?"status err":"status good";
+    const visual=(f.results||[]).filter(x=>x.feature?.cover_visual_status?.visual_observed).length;
+    const visualMissing=(f.results||[]).filter(x=>x.feature?.cover_visual_status&&!x.feature.cover_visual_status.visual_observed).length;
+    $("goldenStatus").textContent=`${failed?'⚠':'✓'} 本轮人工确认 ${r.human_current_batch||0}篇 · 详情 ${h.hydrated||0}/${h.attempted||0} · 视频弱Feature ${h.video_metadata_only||0}篇 · Feature ${f.analyzed||0} · 真实封面视觉 ${visual}（未完成${visualMissing}） · Golden入库 ${a.admitted||0} · Pattern ${(r.counts||{}).patterns||0}${failed?` · 失败 ${failed}篇（见下方原因）`:''}。外部路线已完成，现在点击C与内部路线融合。`;
+    renderHydrateErrors(h);
+    loadGolden();
+  });
+}
+function renderHydrateErrors(h){
+  const box=$("hydrateErrors"), errors=h.errors||[];
+  if(!errors.length){ box.className="hydrate-errors"; box.innerHTML=""; return; }
+  box.className="hydrate-errors show";
+  box.innerHTML=`<b class="err">详情补全失败原因</b><div class="status" style="margin:4px 0 8px">这不是 Feature Agent 的问题；下面是打开原帖详情时返回的真实错误。</div>`+
+    errors.map((e,i)=>`<div class="card2"><b>${i+1}. ${esc(e.title||e.candidate_id)}</b> <span class="pill">${esc(e.code||"ERROR")}</span><div class="err">${esc(e.error||"未知错误")}</div>${e.url?`<a href="${esc(e.url)}" target="_blank" class="status">打开原帖检查登录态/链接</a>`:""}</div>`).join("")+
+    (h.hard_stop?`<div class="err">批次已提前停止：${esc(h.hard_stop.error||h.hard_stop.code)}</div>`:"");
+}
+async function doGoldenRebuild(){
+  const r=await jpost("/api/golden/patterns/rebuild",{});
+  $("goldenStatus").textContent=r.ok?`✓ Pattern ${r.patterns?.length||0} 个已重建；正式Topic Score未改变，等待完整Pipeline`:`✗ ${r.error||"失败"}`;
+  loadGolden();
+}
+function doGoldenRevalidate(){
+  $("goldenStatus").textContent="⏳ 正在读取到期 Golden 的最新热度；遇到验证或限流会停止…";
+  postTask("/api/golden/revalidate",{limit:10},$("goldenStatus"),r=>{
+    if(!r?.ok){ $("goldenStatus").textContent="✗ "+(r?.error||"复查失败"); return; }
+    const rv=r.revalidation||{};
+    const errs=(rv.errors||[]).length;
+    $("goldenStatus").textContent=`${errs?'⚠':'✓'} 复查 ${rv.revalidated||0}/${rv.checked||0} 篇 · Pattern ${(r.patterns||[]).length||0} 个${errs?` · 失败 ${errs} 篇`:' · 持续增长提权/停滞降权已生效'}`;
+    loadGolden();
+  });
+}
+async function loadGolden(){
+  const r=await jget("/api/golden"); if(!r.ok) return;
+  const c=r.counts||{};
+  state.goldenRefs=new Set((r.candidates||[]).flatMap(x=>[x.url,x.note_id,x.title]).filter(Boolean));
+  $("goldenStats").innerHTML=[
+    [c.candidates||0,"全部 Candidate"],[c.human||0,"Human 人选"],[c.agent||0,"Agent 选"],
+    [c.pending_detail||0,"待补详情"],[c.featured||0,"已提 Feature"],[c.golden||0,"Golden Pool"],
+    [c.image_text||0,"图文Golden"],[c.video||0,"视频Golden"],[c.unknown_media||0,"旧/未知媒介"]
+  ].map(x=>`<div class="golden-stat"><b>${x[0]}</b><span>${x[1]}</span></div>`).join("");
+  $("goldenCandidates").innerHTML=(r.candidates||[]).slice(0,40).map(x=>`<div class="card2 candidate-card"><b>${esc(x.title||"(无题)")}</b> <span class="pill">${esc(x.source_type)}</span> <span class="pill">${mediaLabel(x.content_type)}</span><div class="status">状态 ${esc(x.status)} · 分析范围 ${esc(x.analysis_scope||"metadata_only")} · 正文 ${x.body?"✓ 已有":x.content_type==="video"?"视频弱Feature":"✗ 待补"} · Feature ${x.has_feature?"✓":"待分析"} · Candidate ${Number(x.candidate_score||0).toFixed(2)}</div>${x.content_type==="unknown"?`<div><button class="ghost" onclick="classifyGoldenMedia('${x.candidate_id}','image_text')">标为图文</button> <button class="ghost" onclick="classifyGoldenMedia('${x.candidate_id}','video')">标为视频</button></div>`:""}${x.url?`<a href="${esc(x.url)}" target="_blank" class="status">查看原帖</a>`:""}</div>`).join("")||"<div class='status'>还没有 Candidate。请在上方样本库点“⭐ 设为人工 Golden”，或点“Agent 选10篇”。</div>";
+  $("goldenPool").innerHTML=(r.samples||[]).slice(0,20).map(x=>`<div class="card2"><b>${esc(x.title||"(无题)")}</b> <span class="pill">${esc(x.source_type)}</span> <span class="pill">${mediaLabel(x.content_type)}</span><br><span class="status">Golden ${Number(x.golden_score||0).toFixed(2)} · Transfer ${Number(x.transfer_score||0.5).toFixed(2)} · 复查 ${Number(x.revalidation_score||1).toFixed(2)}${Number(x.revalidation_score||1)>1.05?"↑增长":Number(x.revalidation_score||1)<0.95?"↓停滞":""} · ${esc(x.admission_status)} · ${x.content_type==="video"?"仅参与Topic规律":x.body?"可用于图文Content":"弱图文证据"}</span><div class="status">分维度迁移：${Object.entries(x.transfer_dimensions||{}).map(([k,v])=>k+" "+Number(v).toFixed(2)).join(" / ")||"尚无发布反馈"} · 封面视觉 ${x.features?.cover?.visual_observed?"✓真实读取":"未读取/弱证据"}</div></div>`).join("")||"<div class='status'>还没有 Golden Sample。先人选/Agent选，再分析入库。</div>";
+  $("goldenPatterns").innerHTML=(r.patterns||[]).slice(0,20).map(x=>`<div class="card2"><b>${x.segment_key}</b> <span class="pill">v${x.version}</span><div class="status">样本 ${x.sample_count} · 有效权重 ${Number(x.effective_weight||0).toFixed(2)} · 媒介 ${Object.entries(x.pattern?.media_counts||{}).map(([k,v])=>mediaLabel(k)+v).join(" / ")||"旧Pattern待重建"}</div><div class="status">Topic规律: ${(x.pattern?.title_patterns||[]).slice(0,2).map(a=>a.value).join(" / ")}</div><div class="status">外部受众推断时段: ${(x.pattern?.likely_browse_periods||[]).slice(0,3).map(a=>a.value).join(" / ")||"数据不足"}（非平台真实受众统计）</div><div class="status">图文结构: ${(x.pattern?.content_structures||[]).slice(0,1).map(a=>a.value).join("")||"暂无图文证据"}</div></div>`).join("")||"<div class='status'>Feature 入库后才会形成 Pattern。</div>";
+}
+
+// ---------- ② 今日选题 ----------
+async function loadRecommend(){
+  const payload = await jget("/api/recommend"), topics=payload.topics||[];
+  window._recommendMeta=payload;
+  $("recoList").innerHTML = topics.map((t,i)=>
+    `<div class="card2 cat-${t.category}">
+       <b>${i+1}. ${t.label}</b> <span class="badge">最终权重 ${t.score} · ${t.category}</span>${["realtime_golden_discovered","unified_account_golden_discovered"].includes(t.source)?" <span class='pill' style='background:var(--ok)'>🔥 平台×Golden×账号新选题</span>":""}
+       <div class="status">账号 ${t.account_score}×35% · 平台 ${t.platform_score}×30% · Golden ${t.golden_support ?? 0}×30% · 新颖度 ${t.novelty_score ?? 0}×5% · 关键词: ${t.keyword}</div>
+       <div class="status">实时热度 ${t.live_heat}(样本${t.live_n}条,新鲜度${t.live_freshness==null?"缺失":(t.live_freshness*100).toFixed(0)+"%"})</div>
+       <div class="status">账号七维覆盖 ${Math.round((t.account_data_coverage||0)*100)}% · 置信度 ${Math.round((t.account_confidence||0)*100)}% · 平台四维覆盖 ${Math.round((t.platform_data_coverage||0)*100)}% · 建议时段 ${((t.topic_brief?.timing_hypothesis?.account_observed_or_estimated)||[]).map(x=>x.window||x).join(" / ")||"数据不足"}</div>
+       ${t.live_phrases?.length ? `<div class="status">🔥 热门角度: ${t.live_phrases.join(" / ")}</div>` : ""}
+       ${t.trend_evidence?.length ? `<div class="status">热点证据: ${t.trend_evidence.join(" / ")}</div>` : ""}
+       <button class="ghost" onclick='useTopic(${JSON.stringify(t).replace(/'/g,"&#39;")})'>用此选题</button>
+     </div>`).join("") || "<div class='card2 err'>尚无已生效推荐。只有人机协同三步流程完整成功后才会出现。</div>";
+  return topics;
+}
+async function refreshRecommend(doneText="已读取最近一次完整Pipeline的正式推荐"){
+  const status=$("recoStatus");
+  status.textContent="⏳ 正在读取已生效Topic Score…";
+  status.className="status";
+  try{
+    const topics=await loadRecommend();
+    const meta=window._recommendMeta||{};
+    status.textContent=topics.length?`✓ ${doneText} · v${meta.weights_version||"?"} · Pipeline ${meta.pipeline_id||"—"} · 共 ${topics.length} 个 · ${new Date().toLocaleTimeString()}`:`尚无已生效推荐；请先跑通完整流程`;
+    status.className="status good";
+  }catch(e){
+    status.textContent="✗ 刷新推荐失败: "+e;
+    status.className="status err";
+  }
+}
+function useTopic(t){
+  state.topic = t;
+  $("writeCtx").innerHTML = "选题:<b>"+t.label+"</b>(关键词 "+t.keyword+") · 已选参考 "+state.refs.length+" 篇";
+  $("genBtn").disabled = false;
+  $("kw").value = t.keyword;
+  $("hotStatus").textContent="已带入选题关键词；点“搜索”提取实时平台文案与相关Golden Sample";
+  location.hash = "#s-hot";
+}
+
+// ---------- ③ 热门搜索 ----------
+function doSearch(){
+  state.refs = [];  // 每次搜索清空之前的勾选,不累计
+  if(state.topic) $("writeCtx").innerHTML="选题:<b>"+state.topic.label+"</b> · 已选参考 0 篇";
+  postTask("/api/search",{keyword:$("kw").value,limit:parseInt($("kwlimit").value)||10},$("hotStatus"),r=>{
+    if(!r.ok){ $("hotList").innerHTML="<div class='err'>"+r.error+"</div>"; return; }
+    $("hotStatus").textContent=(r.warning?"⚠ "+r.warning:"✓ 平台 "+(r.platform_results||0)+" 条 · Golden "+(r.golden_results||0)+" 条"); $("hotStatus").className="status "+(r.warning?"err":"good");
+    $("hotList").innerHTML = r.results.map((x,i)=>
+      `<div class="hot">
+        <input type="checkbox" onchange="toggleRef(this,${i})" data-title="${(x.title||'').replace(/"/g,'&quot;')}">
+        <span class="pill">${x.is_golden?'⭐ Golden Sample':'🔥 实时平台'}</span> <span class="pill">${mediaLabel(x.content_type)}</span>
+        <span class="likes">${x.likes||0}赞</span>
+        <a href="${x.url}" target="_blank" style="color:var(--fg);text-decoration:none">${x.title}</a>
+        ${x.body_excerpt?`<div class="status">${x.is_golden?'Golden正文证据':'已缓存正文证据'}：${esc(x.body_excerpt.slice(0,160))}…</div>`:""}
+       </div>`).join("");
+    window._hot = r.results;
+  });
+}
+function toggleRef(cb, i){
+  const src=window._hot[i];
+  const item = {title:src.title||"",source:src.source||"platform_live",golden_id:src.golden_id||"",content_type:src.content_type||"unknown",body_excerpt:src.body_excerpt||"",url:src.url||""};
+  if(cb.checked) state.refs.push(item);
+  else state.refs = state.refs.filter(r=>(r.golden_id||r.url||r.title)!==(item.golden_id||item.url||item.title));
+  if(state.topic) $("writeCtx").innerHTML="选题:<b>"+state.topic.label+"</b> · 已选参考 "+state.refs.length+" 篇";
+}
+
+// ---------- ④ AI写稿 ----------
+function doGenerate(){
+  if(!state.topic){ alert("请先在②选一个选题"); return; }
+  const cfg=getModelCfg();
+  if(!modelReady(cfg)){ $("writeStatus").textContent="✗ 请选择 Codex CLI，或补全 Base URL / API Key / 模型"; return; }
+  postTask("/api/generate",{topic_id:state.topic.id,topic_brief:state.topic.topic_brief||{},refs:state.refs,model_config:cfg},$("writeStatus"),r=>{
+    if(!r.ok){ $("writeStatus").textContent="✗ "+r.error; return; }
+    $("dTitle").value=r.title||""; $("dBody").value=r.body||"";
+    $("dTopics").value=(r.topics||[]).join(","); $("dCover").value=r.cover_text||"";
+    state.goldenUsageId=r.golden_usage_id||"";
+    state.contentEvidence=r.evidence||{};
+    window._compOk=false; window._reviewOk=false;
+    if(r.evidence) { var msgEvidence=` · Golden证据 ${(r.evidence.golden_ids||[]).length}篇 / Pattern ${(r.evidence.pattern_ids||[]).length}个`; } else { var msgEvidence=""; }
+    // 标题不可信 → 飘红提示手动改
+    $("dTitle").style.borderColor = r.needs_title ? "var(--accent)" : "var(--line)";
+    let msg = (typeof msgEvidence!=="undefined" ? msgEvidence : "");
+    if(r.needs_title) msg += "⚠️ <span class='err'>标题需你手动填(AI输出不规范)</span> ";
+    if(r.compliance_hits && r.compliance_hits.length)
+      msg += "⚠️ <span class='err'>合规命中: "+r.compliance_hits.join(",")+"</span>";
+    if(msg) $("writeStatus").innerHTML = msg;
+    location.hash="#s-write";
+    // 新视觉链路耗时较长，交给用户主动触发；不再自动显示旧三模板造成混淆。
+    $("coverStatus").textContent="文案已生成；点击“生成图文包 + 3套动态封面”继续";
+    location.hash="#s-cover";
+  });
+}
+
+// ---------- ⑤ 封面 ----------
+function chooseCover(path, card){
+  state.coverImage=path;
+  document.querySelectorAll(".cover-choice").forEach(x=>x.classList.remove("selected"));
+  if(card) card.classList.add("selected");
+  $("coverStatus").textContent="✓ 已选择发布封面";
+}
+
+async function doCover(){
+  const txt = $("dCover").value || $("dTitle").value;
+  const cat = state.topic ? state.topic.category : "_default";
+  $("coverStatus").textContent="🖼️ 设计中…";
+  $("coverGrid").innerHTML="";
+  const r = await jpost("/api/cover",{cover_text:txt,title:$("dTitle").value,category:cat,topic_id:state.topic?state.topic.id:"",model_config:getModelCfg(),golden_usage_id:state.goldenUsageId||"",stem:"live_"+Date.now()});
+  if(r.ok){
+    const imgs=(r.images||[]);
+    state.coverImage=r.image_path;
+    $("coverGrid").innerHTML=imgs.map((x,i)=>{
+      const fn=x.path.split("/").pop();
+      return `<div class="cover-choice ${i===0?'selected':''}" data-path="${x.path}" onclick="chooseCover(this.dataset.path,this)">`+
+        `<img class="cover" src="/covers/${fn}?t=${Date.now()}"><div class="cap">${x.label||x.style}</div></div>`;
+    }).join("");
+    const c=r.critic||{};
+    const warn=(c.issues||[]).join("；");
+    $("coverCritic").textContent=`视觉检查：可读性 ${c.readability??'-'} · 层级 ${c.visual_hierarchy??'-'} · 点击潜力 ${c.clickability??'-'}${warn?' · '+warn:''}`;
+    $("coverStatus").textContent=r.fallback?"✓ 已生成（兼容模式）":"✓ 已生成3个候选，请选一张";
+  } else $("coverStatus").textContent="✗ "+r.error;
+}
+
+function showCarousel(r){
+  if(!r||!r.post_id){ $("carouselResult").innerHTML="<span class='err'>图文包生成失败</span>"; return; }
+  const covers=r.rendered_cover_variants||[];
+  const selected=Number((r.asset_plan||{}).selected_cover_index||0);
+  if(covers[selected]?.path) state.coverImage=covers[selected].path;
+  $("carouselResult").innerHTML=`<b>图文包 ${esc(r.post_id)}</b><div class="status">Canva目录：${esc(r.canva_package||"")}</div><div style="margin:8px 0"><button data-post-id="${esc(r.post_id)}" onclick="sendToCanva(this.dataset.postId)">发送到 Canva</button><span id="canvaImportStatus" class="status">先选好封面，再手动发送</span></div><div class="status">点击其中一张，将它设为最终封面并同步替换第一页。</div><div class="cover-grid">`+
+    covers.map((x,i)=>`<div class="cover-choice ${i===selected?'selected':''}" data-post-id="${esc(r.post_id)}" data-index="${i}" onclick="chooseCarouselCover(this.dataset.postId,Number(this.dataset.index),this)"><img class="cover" src="/post-pages/${encodeURIComponent(r.post_id)}/${x.path.split('/').pop()}?t=${Date.now()}"><div class="cap">${esc(x.name||("方案"+(i+1)))}</div><div class="status">${esc(x.reason||"")}</div></div>`).join("")+`</div><div class="status">内容页 ${(r.rendered_pages||[]).length} 张 · 生成素材 ${(r.image_generation||{}).generated||0} 个 · Review ${(r.review||{}).status||"—"}</div>`;
+}
+
+async function loadCanvaStatus(){
+  const r=await jget("/api/canva/status");
+  if(!r.configured){ $("canvaStatus").innerHTML=`<span class='err'>未配置开发者凭证</span> · 先在终端运行 python -m canva_connect configure`; return; }
+  $("canvaStatus").innerHTML=r.authenticated?"<span class='good'>✓ 已连接</span>":"<span class='err'>尚未授权</span>";
+}
+
+function connectCanva(){
+  postTask("/api/canva/login",{},$("canvaStatus"),r=>{
+    $("canvaStatus").innerHTML=r.ok?"<span class='good'>✓ Canva 已连接</span>":`<span class='err'>${esc(r.error||"连接失败")}</span>`;
+  });
+}
+
+function sendToCanva(postId){
+  const status=$("canvaImportStatus")||$("canvaStatus");
+  postTask("/api/canva/import",{post_id:postId},status,r=>{
+    const design=(r.designs||[])[0]||{};
+    if(!r.ok||!design.edit_url){ status.innerHTML=`<span class='err'>${esc(r.error||"Canva 未返回编辑链接")}</span>`; return; }
+    status.innerHTML=`<span class='good'>✓ 已导入 Canva</span> · <a href="${esc(design.edit_url)}" target="_blank" rel="noopener" style="color:#78e2d3">打开可编辑设计</a>`;
+  });
+}
+
+async function chooseCarouselCover(postId,index,card){
+  $("coverStatus").textContent="正在保存封面选择…";
+  const r=await jpost("/api/carousel/select-cover",{post_id:postId,index:index});
+  if(!r.ok){ $("coverStatus").textContent="✗ "+(r.error||"封面选择失败"); return; }
+  document.querySelectorAll("#carouselResult .cover-choice").forEach(x=>x.classList.remove("selected"));
+  if(card) card.classList.add("selected");
+  state.coverImage=r.image_path;
+  $("coverStatus").textContent=`✓ 已选择方案 ${index+1}，已同步到第一页和 Canva 包`;
+}
+
+function doCarousel(){
+  if(!$("dTitle").value.trim()){ $("coverStatus").textContent="✗ 请先生成或填写文案"; return; }
+  const content={title:$("dTitle").value,body:$("dBody").value,cover_text:$("dCover").value,
+                 topics:$("dTopics").value.split(",").map(x=>x.trim()).filter(Boolean),
+                 evidence:state.contentEvidence||{}};
+  postTask("/api/carousel",{topic_id:state.topic?.id||"manual",content:content,model_config:getModelCfg(),
+           generate_images:true,cover_direction_index:0},$("coverStatus"),r=>{
+    showCarousel(r); $("coverStatus").textContent="✓ 已生成6页图文和3套差异化封面";
+  });
+}
+
+// ---------- ⑥ 审查发布 ----------
+async function doCompliance(){
+  const r = await jpost("/api/compliance",{title:$("dTitle").value,body:$("dBody").value,cover_text:$("dCover").value});
+  window._compOk=Boolean(r.ok);
+  const issues=((r.policy||{}).issues||[]).map(x=>`[${x.severity}] ${x.message}${x.evidence?'：'+x.evidence:''}`).join("；");
+  const quality=` · 内容质量 ${Number((r.quality||{}).score||0).toFixed(2)}`;
+  $("compStatus").innerHTML = r.ok ? `<span class='good'>✓ 合规通过</span>${quality}${issues?' · '+esc(issues):''}`
+    : `<span class='err'>✗ 合规门禁未通过</span>${quality} · ${esc(issues||(r.hits||[]).join(","))}`;
+  return window._compOk;
+}
+async function doReviewer(){
+  if(!state.topic){ window._reviewOk=false; $("reviewStatus").textContent="✗ 先选择选题"; return false; }
+  const r=await jpost("/api/review",{topic_id:state.topic.id,content:{title:$("dTitle").value,body:$("dBody").value,cover_text:$("dCover").value,evidence:state.contentEvidence||{}}});
+  if(!r.ok){ window._reviewOk=false; $("reviewStatus").textContent="✗ "+(r.error||"Reviewer失败"); return false; }
+  const v=r.review||{}; const detail=[...(v.issues||[]),...(v.warnings||[])].join("；");
+  window._reviewOk=v.status==="PASS";
+  $("reviewStatus").innerHTML=v.status==="PASS"?`<span class='good'>✓ Reviewer PASS</span>${detail?" · "+detail:""}`:`<span class='err'>✗ Reviewer REVISE</span> · ${detail}`;
+  return window._reviewOk;
+}
+async function doPublish(){
+  if(window._compOk!==true && !(await doCompliance())){ alert("合规未通过，不能发布"); return; }
+  if(window._reviewOk!==true && !(await doReviewer())){ alert("Reviewer 未通过，不能发布"); return; }
+  if(!state.coverImage){ alert("请先生成封面(⑤ 封面)"); return; }
+  postTask("/api/publish",{
+    title:$("dTitle").value, body:$("dBody").value,
+    topics:$("dTopics").value.split(",").map(s=>s.trim()).filter(Boolean),
+    images:state.coverImage||"", category:state.topic?state.topic.category:"",
+    topic_id:state.topic?state.topic.id:"", draft:true, golden_usage_id:state.goldenUsageId||"",cover_text:$("dCover").value
+  },$("pubStatus"),r=>{
+    if(r.ok && r.platform_saved){
+      let extra = r.platform_draft_id ? ` · draft_id ${r.platform_draft_id}` : "";
+      let msg;
+      if(r.title_saved===false){
+        if(r.body_saved){
+          msg = `<span style="color:#b7791f;font-weight:700">✓ 正文/图片已进入小红书草稿箱${extra}</span>` +
+                ` <span class='status'>⚠ 标题未同步，请在小红书内手动补标题</span>`;
+        }else{
+          msg = `<span style="color:#b7791f;font-weight:700">⚠ 已执行草稿推送${extra}</span>` +
+                ` <span class='status'>标题/正文请在小红书内确认</span>`;
+        }
+      }else if(r.platform_partial){
+        msg = `<span style="color:#b7791f;font-weight:700">✓ 已写入标题、正文、图片并执行暂存${extra}</span>` +
+              ` <span class='status'>⚠ 页面未返回明确成功标记，请到草稿箱确认一次</span>`;
+      }else{
+        msg = `<span class='good'>✓ 已确认完整进入小红书草稿箱${extra}</span>`;
+      }
+      if(r.warning) msg += " <span class='status'>"+r.warning+"</span>";
+      $("pubStatus").innerHTML = msg;
+    } else if(r.local_saved){
+      $("pubStatus").innerHTML = `<span class='err'>✗ 平台草稿未确认</span> <span class='status'>✓ 本地草稿已保存 · ${r.error||"请检查OpenCLI草稿箱"}</span>`;
+    } else {
+      $("pubStatus").innerHTML = "<span class='err'>✗ "+(r.error||"发布失败")+"</span>";
+    }
+  });
+}
+
+// ---------- 重启服务 ----------
+async function restartServer(){
+  if(!confirm("确定重启后端服务？")) return;
+  try{ await jpost("/api/restart"); $("gstatus").textContent="重启中…"; }catch(e){}
+  // 等待2秒后刷新页面，尝试重连
+  setTimeout(()=>{ $("gstatus").textContent="等待重启…"; location.reload(); }, 2000);
+}
+
+// ---------- 初始化 ----------
+["dTitle","dBody","dCover"].forEach(id=>$(id).addEventListener("input",invalidateReleaseChecks));
+loadDashboard(); loadRecommend(); loadModels(); loadCanvaStatus(); loadGolden().then(loadSamples);
+</script>
+</body>
+</html>
