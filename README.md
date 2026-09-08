@@ -1,4 +1,4 @@
-# XHS Fitness Ops
+# 小红书自动化运营平台（偏健身）/XHS Fitness Ops
 ## English Overview
 XHS Fitness Ops is a local-first, human-supervised multi-agent system for fitness-content operations on Xiaohongshu (RED). It combines first-party account analytics with externally collected examples, converts approved examples into structured Golden Samples and Golden Patterns, and coordinates specialized Topic, Content, Outline, and Cover agents through explicit JSON contracts.
 
