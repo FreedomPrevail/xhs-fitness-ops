@@ -1,5 +1,12 @@
 # XHS Fitness Ops
+## English Overview
+XHS Fitness Ops is a local-first, human-supervised multi-agent system for fitness-content operations on Xiaohongshu (RED). It combines first-party account analytics with externally collected examples, converts approved examples into structured Golden Samples and Golden Patterns, and coordinates specialized Topic, Content, Outline, and Cover agents through explicit JSON contracts.
 
+The workflow is designed around traceable evidence and controlled execution. It keeps pre-publication quality signals, post-publication transfer signals, and revalidation results separate; supports user-triggered evidence refresh and pattern rebuilding; and exposes intermediate decisions for review. A Python/Flask dashboard orchestrates the pipeline, while OpenCLI and browser automation provide optional platform access. Local renderers generate Chinese layouts and editable PowerPoint assets for manual refinement in Canva.
+
+This is not an unattended posting bot. Data collection and content generation are user-triggered, human review and policy checks are required before publication, and autonomous likes, comments, messages, follows, and final posting are disabled.
+
+## 简介
 一个本地优先、人工触发的小红书健身内容运营工作台。它把账号数据、外部样本、Golden Pattern、LLM 选题与写稿、三套封面方向、5–7 页图文排版以及可编辑 Canva PPTX 串成一条可审查的生产链路。
 
 > 本仓库不是无人值守发布机器人。平台读取、Golden revalidation 和内容生成都需要运营者主动触发；点赞、收藏、关注、评论、私信和自动正式发布保持关闭。遇到登录验证、限流或账号安全提示时应停止当前批次，并在官方客户端人工处理。
